@@ -1,25 +1,26 @@
 import socket
 
-HOST = '127.0.0.1'  # localhost — only your own machine can connect
-PORT = 5000
-
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server.bind((HOST, PORT))
+server.bind(("127.0.0.1", 5000))
 server.listen()
 
-print(f"Server listening on {HOST}:{PORT}")
+print("Server listening on port 5000...")
 
-conn, addr = server.accept()         # blocks here — waiting
-print(f"Connected: {addr}")
+def receiver(user_socket):
+    while True:
+        msg = user_socket.recv(1024)
+        print(f"User: {msg.decode()}")
+        if msg != b'':
+            user_socket.send(msg)
+        else:
+            user_socket.close()
+            print("User disconnected")
+            break
+def accept_user():
+    while True:
+        user_socket, user_adr = server.accept()
+        print(f"New connection from {user_adr}")
+        receiver(user_socket)
 
-while True:
-    data = conn.recv(1024)           # receive up to 1024 bytes
-    if not data:                     # empty = client disconnected
-        break
-    print(f"Received: {data.decode()}")
-    conn.send(data)                  # echo it straight back
-
-conn.close()
-server.close()
-print("Connection closed.")
+accept_user()
