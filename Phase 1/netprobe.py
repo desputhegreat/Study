@@ -19,24 +19,26 @@ def domain_resolve():
     return domain_ip
 
 def latency_calc(ip, port, attempt):
+    
     if not ip:
         return None
-    try:
-        for _ in range(attempt):
-            times = []
-            
+    times = []
+    
+    for _ in range(attempt):
+        try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.settimeout(3)
-            
+                
             start = time.perf_counter()
             server.connect((ip, port))
             end = time.perf_counter()
             server.close()
             
             times.append((end-start) * 1000)
-    except (ConnectionRefusedError, socket.timeout):
-        pass
-    if time:
+        except (ConnectionRefusedError, socket.timeout):
+            pass
+    
+    if times:
         return round(sum(times)/len(times), 2)
     return None
 
