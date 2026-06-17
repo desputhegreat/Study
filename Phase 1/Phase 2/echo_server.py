@@ -11,7 +11,7 @@ def receiver(user_socket):
     while True:
         msg = user_socket.recv(1024)
         print(f"User: {msg.decode()}")
-        if msg != b'':
+        if msg:
             user_socket.send(msg)
         else:
             user_socket.close()

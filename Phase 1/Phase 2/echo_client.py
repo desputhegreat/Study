@@ -7,11 +7,15 @@ except ConnectionRefusedError:
     exit()
 while True:
     msg = input("You: ").strip().encode()
+    if msg.lower().decode() == 'quit':
+        server.close()
+        break
     try:    
         server.send(msg)
         reply = server.recv(1024).decode()
         print(f"Server: {reply}")
     except ConnectionResetError:
         server.close()
-        print("Server Closed")  
+        print("Server Closed")
+        break  
 
