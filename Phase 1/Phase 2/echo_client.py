@@ -1,15 +1,21 @@
 import socket
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
 try: server.connect(("localhost",5000))
 except ConnectionRefusedError: 
     print("Server Closed") 
     exit()
+
 while True:
     msg = input("You: ").strip().encode()
+    
     if msg.lower().decode() == 'quit':
         server.close()
         break
+
+    if not msg: continue
+    
     try:    
         server.send(msg)
         reply = server.recv(1024).decode()

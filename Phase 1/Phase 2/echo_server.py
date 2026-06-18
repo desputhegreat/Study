@@ -17,6 +17,7 @@ def receiver(user_socket):
             user_socket.close()
             print("User disconnected")
             break
+
 def accept_user():
     while True:
         user_socket, user_adr = server.accept()
