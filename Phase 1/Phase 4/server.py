@@ -21,14 +21,14 @@ def accepter():
         print(f"New connection from {user_addr}")
         thread = threading.Thread(target=receiver, args=(user_socket, ))
         thread.start()
-        clients.append(user_socket)
+        with lock: clients.append(user_socket)
 
 def read_n(sock, n):
     data = b''
     while len(data) < n:
         chunk = sock.recv(n-len(data))
+        if not chunk: return None
         data += chunk
-    if not data: return None
     return data
     
 def receiver(user_socket):
