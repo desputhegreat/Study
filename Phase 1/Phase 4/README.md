@@ -8,4 +8,4 @@ Learnt:
     WebSockets
     Persistent connections
 
-Mini-project: WebSocket chat — browser tab connects to your Python server. You've now crossed from CLI to the web.
+Mini-project: WebSocket chat — browser tab connects to your Python server.
